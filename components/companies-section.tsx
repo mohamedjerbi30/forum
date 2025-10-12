@@ -2,22 +2,25 @@
 
 import { useState } from "react"
 import { ChevronDown } from "lucide-react"
+import { companiesData, type Company } from "@/lib/companies-data"
+import { CompanyModal } from "@/components/company-modal"
 
 export function CompaniesSection() {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [selectedCompany, setSelectedCompany] = useState<Company | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const companies = [
-    { name: "TechCorp Tunisia", sector: "Technologies de l'information", logo: "/tech-company-logo.jpg" },
-    { name: "Innovation Industries", sector: "Industrie & Manufacturing", logo: "/industry-company-logo.jpg" },
-    { name: "Global Tech", sector: "Intelligence Artificielle", logo: "/ai-company-logo.png" },
-    { name: "StartUp Hub", sector: "Incubateur & Accélérateur", logo: "/startup-hub-logo.jpg" },
-    { name: "Energy Solutions", sector: "Énergies Renouvelables", logo: "/energy-company-logo.jpg" },
-    { name: "Digital Bank", sector: "Services Financiers", logo: "/abstract-bank-logo.png" },
-    { name: "Pharma Plus", sector: "Pharmaceutique", logo: "/pharma-company-logo.png" },
-    { name: "Auto Engineering", sector: "Automobile", logo: "/automotive-company-logo.png" },
-  ]
+  const displayedCompanies = isExpanded ? companiesData : companiesData.slice(0, 12)
 
-  const displayedCompanies = isExpanded ? companies : companies.slice(0, 6)
+  const handleCompanyClick = (company: Company) => {
+    setSelectedCompany(company)
+    setIsModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setIsModalOpen(false)
+    setSelectedCompany(null)
+  }
 
   return (
     <section className="py-16 md:py-24 bg-muted/30">
@@ -29,33 +32,44 @@ export function CompaniesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          {displayedCompanies.map((company, index) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
+          {displayedCompanies.map((company) => (
             <div
-              key={index}
-              className="bg-card border border-border rounded-xl p-6 flex flex-col items-center text-center hover:shadow-lg transition-all group"
+              key={company.id}
+              className="bg-card border border-border rounded-xl p-4 flex flex-col items-center text-center hover:shadow-lg transition-all group cursor-pointer hover:scale-105"
+              onClick={() => handleCompanyClick(company)}
             >
-              <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <img src={company.logo || "/placeholder.svg"} alt={company.name} className="w-12 h-12 object-contain" />
+              <div className="w-20 h-20 rounded-lg bg-white border border-border flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-sm">
+                <img 
+                  src={company.logo} 
+                  alt={company.name} 
+                  className="w-16 h-16 object-contain" 
+                />
               </div>
-              <h3 className="font-bold text-base mb-2">{company.name}</h3>
-              <p className="text-xs text-muted-foreground">{company.sector}</p>
+              <h3 className="font-semibold text-sm mb-1 line-clamp-2">{company.name}</h3>
+              <p className="text-xs text-muted-foreground line-clamp-1">{company.sector}</p>
             </div>
           ))}
         </div>
 
-        {companies.length > 6 && (
+        {companiesData.length > 12 && (
           <div className="text-center mt-8">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
             >
-              {isExpanded ? "Voir moins" : "Voir plus d'entreprises"}
+              {isExpanded ? "Voir moins" : `Voir tous les ${companiesData.length} exposants`}
               <ChevronDown className={`transition-transform ${isExpanded ? "rotate-180" : ""}`} size={20} />
             </button>
           </div>
         )}
       </div>
+      
+      <CompanyModal 
+        company={selectedCompany}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+      />
     </section>
   )
 }

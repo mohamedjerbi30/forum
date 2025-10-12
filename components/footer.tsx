@@ -1,109 +1,67 @@
 import Link from "next/link"
-import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from "lucide-react"
+import Image from "next/image"
 
 export function Footer() {
   return (
-    <footer className="bg-foreground text-background">
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* About */}
-          <div>
-            <h3 className="font-bold text-lg mb-4">Forum ENIT Entreprise</h3>
-            <p className="text-sm text-background/80 leading-relaxed">
-              Le rendez-vous annuel qui connecte les entreprises et les talents de demain.
-            </p>
+    <footer className="bg-gray-800 text-white">
+      <div className="max-w-4xl mx-auto px-4 py-16 text-center">
+        <div className="mb-8">
+          <div className="flex items-center justify-center gap-8 mb-6">
+            <Image
+              src="/img/img/Primary logo - White.png"
+              alt="ENIT Junior Entreprise"
+              width={150}
+              height={100}
+              className="object-contain"
+            />
+            <Image
+              src="/img/img/00adb5 on white.png"
+              alt="Proficiency is our currency"
+              width={200}
+              height={100}
+              className="object-contain"
+            />
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold mb-4">Liens rapides</h4>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <Link href="/about" className="text-background/80 hover:text-background transition-colors">
-                  À propos
-                </Link>
-              </li>
-              <li>
-                <Link href="/programme" className="text-background/80 hover:text-background transition-colors">
-                  Programme
-                </Link>
-              </li>
-              <li>
-                <Link href="/exposants" className="text-background/80 hover:text-background transition-colors">
-                  Exposants
-                </Link>
-              </li>
-              <li>
-                <Link href="/participants" className="text-background/80 hover:text-background transition-colors">
-                  Participants
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-semibold mb-4">Contact</h4>
-            <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2">
-                <MapPin size={16} className="mt-1 flex-shrink-0" />
-                <span className="text-background/80">ENIT, Tunis, Tunisie</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail size={16} className="flex-shrink-0" />
-                <a
-                  href="mailto:contact@forumenit.tn"
-                  className="text-background/80 hover:text-background transition-colors"
-                >
-                  contact@forumenit.tn
-                </a>
-              </li>
-              <li className="flex items-center gap-2">
-                <Phone size={16} className="flex-shrink-0" />
-                <span className="text-background/80">+216 XX XXX XXX</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Social Media */}
-          <div>
-            <h4 className="font-semibold mb-4">Suivez-nous</h4>
-            <div className="flex gap-4">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={20} />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full bg-background/10 hover:bg-background/20 flex items-center justify-center transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={20} />
-              </a>
-            </div>
-          </div>
+          <p className="text-lg font-semibold text-yellow-400 mb-2">ENIT Junior Entreprise</p>
+          <p className="text-gray-300">La première Junior Entreprise en Tunisie</p>
         </div>
-
-        <div className="border-t border-background/20 mt-8 pt-8 text-center text-sm text-background/60">
-          <p>&copy; {new Date().getFullYear()} Forum ENIT Entreprise. Tous droits réservés.</p>
+        
+        <h3 className="text-2xl font-bold mb-6">Contactez-nous</h3>
+        <p className="text-lg mb-4">
+          <a href="mailto:contact@enitje.com" className="text-yellow-400 hover:text-yellow-300 transition-colors">
+            contact@enitje.com
+          </a>
+        </p>
+        <p className="text-lg mb-8">Suivez-nous sur les réseaux sociaux</p>
+        
+        <div className="flex justify-center space-x-6">
+          <a 
+            href="https://www.facebook.com/juniorenit" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-2xl hover:text-yellow-400 transition-colors"
+          >
+            📘 Facebook
+          </a>
+          <a 
+            href="https://www.instagram.com/enit.juniorentreprise/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-2xl hover:text-yellow-400 transition-colors"
+          >
+            📷 Instagram
+          </a>
+          <a 
+            href="https://www.linkedin.com/company/enitjuniorentreprise" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-2xl hover:text-yellow-400 transition-colors"
+          >
+            💼 LinkedIn
+          </a>
         </div>
+        
+        <p className="mt-8 text-gray-400">&copy; {new Date().getFullYear()} ENIT Junior Entreprise. Tous droits réservés.</p>
       </div>
     </footer>
   )

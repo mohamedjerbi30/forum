@@ -463,3 +463,164 @@
 .box-shadow-yellow {
   box-shadow: 0 10px 40px rgba(255, 205, 17, 0.2);
 }
+
+/* ===== EFFETS DE HOVER AVANCÉS ===== */
+
+/* Effet Morphisme/Glow pour les cartes */
+.card-glow {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 173, 181, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.card-glow:hover::before {
+  left: 100%;
+}
+
+.card-glow:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 173, 181, 0.3), 0 0 20px rgba(0, 173, 181, 0.1);
+}
+
+/* Effet de pulsation pour les boutons CTA */
+.btn-pulse {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-pulse::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: width 0.6s, height 0.6s;
+  transform: translate(-50%, -50%);
+}
+
+.btn-pulse:hover::before {
+  width: 200%;
+  height: 200%;
+}
+
+.btn-pulse:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 173, 181, 0.4);
+}
+
+/* Effet de rotation 3D pour les statistiques */
+.stat-card-3d {
+  perspective: 1000px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.stat-card-3d:hover {
+  transform: rotateY(10deg) rotateX(10deg);
+}
+
+.stat-card-3d .stat-content {
+  transition: all 0.3s ease;
+  backface-visibility: hidden;
+}
+
+.stat-card-3d:hover .stat-content {
+  transform: translateZ(20px);
+}
+
+/* Effet de bordure animée */
+.border-animate {
+  position: relative;
+  border: 2px solid transparent;
+  background: linear-gradient(var(--card), var(--card)) padding-box,
+              linear-gradient(45deg, #00adb5, #ffcd11, #00adb5) border-box;
+  transition: all 0.3s ease;
+}
+
+.border-animate::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(45deg, #00adb5, #ffcd11, #00adb5);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.border-animate:hover::before {
+  opacity: 1;
+  animation: borderRotate 2s linear infinite;
+}
+
+@keyframes borderRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Effet de zoom doux avec overlay */
+.image-zoom {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.image-zoom img {
+  transition: transform 0.5s ease;
+}
+
+.image-zoom::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 173, 181, 0.1);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.image-zoom:hover img {
+  transform: scale(1.1);
+}
+
+.image-zoom:hover::after {
+  opacity: 1;
+}
+
+/* Scroll snap polishing */
+.snap-y {
+  scroll-behavior: smooth;
+}
+
+/* Assurer que les sections avec du contenu long ne cassent pas le snap */
+.snap-start {
+  scroll-snap-stop: always;
+}
+
+/* Cacher la scrollbar pour un look plus propre */
+.snap-y::-webkit-scrollbar {
+  display: none;
+}
+
+.snap-y {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

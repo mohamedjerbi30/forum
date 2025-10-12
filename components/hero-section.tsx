@@ -3,10 +3,12 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useParallax } from "@/hooks/use-parallax"
 
 export function HeroSection() {
   const [currentText, setCurrentText] = useState(0)
   const carouselTexts = ["Forum ENIT Entreprise", "Connectez-vous avec les leaders", "Découvrez les opportunités"]
+  const parallaxOffset = useParallax(0.5)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -18,8 +20,18 @@ export function HeroSection() {
   return (
     <section className="relative h-screen w-full overflow-hidden video-overlay">
       {/* Video Background */}
-      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover">
-        <source src="/placeholder.mp4" type="video/mp4" />
+      <video 
+        autoPlay 
+        loop 
+        muted 
+        playsInline 
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{
+          transform: `translateY(${parallaxOffset}px)`,
+          transition: 'transform 0.1s ease-out'
+        }}
+      >
+        <source src="/img/img/videohome.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay */}
@@ -35,11 +47,11 @@ export function HeroSection() {
 
           {/* Subtitle */}
           <p className="text-xl md:text-2xl lg:text-3xl text-white/90 mb-8 max-w-3xl mx-auto text-pretty">
-            Soyez les bienvenus le 20 novembre à l&apos;ENIT
+            Soyez les bienvenus le 19 novembre à l&apos;ENIT
           </p>
 
           {/* CTA Button */}
-          <Button asChild size="lg" className="rounded-full text-lg px-8 py-6 h-auto">
+          <Button asChild variant="pulse" size="lg" className="rounded-full text-lg px-8 py-6 h-auto">
             <Link href="/inscription">S&apos;inscrire</Link>
           </Button>
 

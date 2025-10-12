@@ -3,7 +3,7 @@ import { Clock, MapPin, Users } from "lucide-react"
 export default function ProgrammePage() {
   const timeline = [
     {
-      day: "Jour 1 - Mardi 19 Novembre 2025",
+      day: "Mardi 19 Novembre 2025",
       events: [
         { time: "08:00 - 09:00", title: "Accueil et inscription", location: "Hall principal" },
         {
@@ -21,23 +21,8 @@ export default function ProgrammePage() {
           speakers: ["Dr. Ahmed Ben Salem", "Mme. Leila Mansour"],
         },
         { time: "14:30 - 16:00", title: "Ateliers thématiques", location: "Salles B1, B2, B3" },
-        { time: "16:00 - 18:00", title: "Sessions de recrutement", location: "Stands entreprises" },
-      ],
-    },
-    {
-      day: "Jour 2 - Mercredi 20 Novembre 2025",
-      events: [
-        { time: "09:00 - 10:00", title: "Accueil des participants", location: "Hall principal" },
-        { time: "10:00 - 12:00", title: "Visite des stands et networking", location: "Espace exposition" },
-        { time: "12:00 - 13:00", title: "Pause déjeuner", location: "Cafétéria" },
-        {
-          time: "13:00 - 14:30",
-          title: "Panel: Innovation et transformation digitale",
-          location: "Amphithéâtre A",
-          speakers: ["M. Karim Trabelsi", "Dr. Sonia Gharbi"],
-        },
-        { time: "14:30 - 16:00", title: "Speed dating entreprises", location: "Salle C" },
-        { time: "16:00 - 17:00", title: "Cérémonie de clôture", location: "Amphithéâtre A" },
+        { time: "16:00 - 17:30", title: "Sessions de recrutement", location: "Stands entreprises" },
+        { time: "17:30 - 18:00", title: "Cérémonie de clôture", location: "Amphithéâtre A" },
       ],
     },
   ]
@@ -48,7 +33,7 @@ export default function ProgrammePage() {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-balance">Programme</h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Découvrez le programme détaillé des deux journées du Forum ENIT Entreprise 2025
+            Découvrez le programme détaillé du Forum ENIT Entreprise 2025
           </p>
         </div>
 
