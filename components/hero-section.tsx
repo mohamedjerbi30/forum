@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useParallax } from "@/hooks/use-parallax"
+import { SplitText } from "@/components/split-text"
 
 export function HeroSection() {
   const [currentText, setCurrentText] = useState(0)
@@ -40,14 +41,24 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 h-full flex items-center justify-center">
         <div className="container mx-auto px-4 text-center">
-          {/* Carousel Text */}
-          <h1 className="carousel-text text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 text-balance">
-            {carouselTexts[currentText]}
+          {/* Carousel Text with Split Animation */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 text-balance">
+            <SplitText 
+              text={carouselTexts[currentText]} 
+              animationType="fadeUp"
+              staggerDelay={80}
+              animationDelay={200}
+            />
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle with Split Animation */}
           <p className="text-xl md:text-2xl lg:text-3xl text-white/90 mb-8 max-w-3xl mx-auto text-pretty">
-            Soyez les bienvenus le 19 novembre à l&apos;ENIT
+            <SplitText 
+              text="Soyez les bienvenus le 19 novembre à l'ENIT"
+              animationType="slideRight"
+              staggerDelay={30}
+              animationDelay={800}
+            />
           </p>
 
           {/* CTA Button */}

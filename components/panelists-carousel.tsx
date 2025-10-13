@@ -1,10 +1,12 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export function PanelistsCarousel() {
-  const [isHovered, setIsHovered] = useState(false)
-  const scrollRef = useRef<HTMLDivElement>(null)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const panelists = [
     {
@@ -39,174 +41,164 @@ export function PanelistsCarousel() {
     },
   ]
 
-  const duplicatedPanelists = [...panelists, ...panelists, ...panelists]
+  // Fonctions de navigation
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % panelists.length)
+  }
 
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + panelists.length) % panelists.length)
+  }
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index)
+  }
+
+  // Auto-play functionality
   useEffect(() => {
-    const scrollContainer = scrollRef.current
-    if (!scrollContainer) return
-
-    let isAutoScrolling = true
-    let animationId: number
-    const speed = isHovered ? 0.3 : 0.8
-    
-    const autoScroll = () => {
-      if (isAutoScrolling && scrollContainer) {
-        scrollContainer.scrollLeft += speed
-        
-        // Reset à la fin
-        if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
-          scrollContainer.scrollLeft = 0
-        }
+    if (isAutoPlaying) {
+      intervalRef.current = setInterval(() => {
+        nextSlide()
+      }, 4000) // Change every 4 seconds
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
       }
-      animationId = requestAnimationFrame(autoScroll)
     }
-    
-    // Démarrer l'auto-scroll
-    animationId = requestAnimationFrame(autoScroll)
-    
-    // Pause l'auto-scroll quand l'utilisateur interagit
-    let pauseTimeout: NodeJS.Timeout
-    const handleUserInteraction = () => {
-      isAutoScrolling = false
-      clearTimeout(pauseTimeout)
-      pauseTimeout = setTimeout(() => {
-        isAutoScrolling = true
-      }, 2000) // Reprend après 2 secondes
-    }
-    
-    // Écouter les interactions utilisateur
-    scrollContainer.addEventListener('touchstart', handleUserInteraction)
-    scrollContainer.addEventListener('mousedown', handleUserInteraction)
-    scrollContainer.addEventListener('wheel', handleUserInteraction)
-    
+
     return () => {
-      cancelAnimationFrame(animationId)
-      clearTimeout(pauseTimeout)
-      scrollContainer.removeEventListener('touchstart', handleUserInteraction)
-      scrollContainer.removeEventListener('mousedown', handleUserInteraction) 
-      scrollContainer.removeEventListener('wheel', handleUserInteraction)
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
     }
-  }, [isHovered])
+  }, [isAutoPlaying])
+
+  // Pause on hover
+  const handleMouseEnter = () => setIsAutoPlaying(false)
+  const handleMouseLeave = () => setIsAutoPlaying(true)
 
   return (
-    <section className="py-16 md:py-24 bg-primary overflow-hidden">
+    <section className="py-16 md:py-24 overflow-hidden" style={{ perspective: '1000px' }}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance text-white">Nos Panélistes</h2>
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto text-pretty">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance text-primary">Nos Panélistes</h2>
+          <p className="text-lg md:text-xl text-primary/80 max-w-2xl mx-auto text-pretty">
             Rencontrez les leaders qui partageront leur expertise et leur vision
           </p>
         </div>
 
-        {/* Container moderne avec effets */}
+        {/* Modern 3D Carousel Container */}
         <div 
-          className="relative group"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          className="relative max-w-6xl mx-auto h-[500px] flex items-center justify-center"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
-          {/* Bouton gauche */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 z-40">
-            <button
-              className="group/left w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
-              onClick={() => {
-                const container = scrollRef.current
-                if (container) {
-                  container.scrollBy({ left: -300, behavior: 'smooth' })
-                }
-              }}
-            >
-              <div className="opacity-0 group-hover/left:opacity-100 transition-all duration-300 bg-white/25 hover:bg-white/35 rounded-full p-2.5 backdrop-blur-sm shadow-xl">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-                </svg>
-              </div>
-            </button>
-          </div>
-          
-          {/* Bouton droite */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 z-40">
-            <button
-              className="group/right w-10 h-10 flex items-center justify-center transition-all duration-300 hover:scale-110"
-              onClick={() => {
-                const container = scrollRef.current
-                if (container) {
-                  container.scrollBy({ left: 300, behavior: 'smooth' })
-                }
-              }}
-            >
-              <div className="opacity-0 group-hover/right:opacity-100 transition-all duration-300 bg-white/25 hover:bg-white/35 rounded-full p-2.5 backdrop-blur-sm shadow-xl">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </button>
-          </div>
-          
-          {/* Overlay dégradé gauche - plus subtil */}
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-primary via-primary/90 to-transparent z-10 pointer-events-none" />
-          
-          {/* Overlay dégradé droite - plus subtil */}
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-primary via-primary/90 to-transparent z-10 pointer-events-none" />
-          
-          {/* Container de scroll moderne */}
-          <div 
-            ref={scrollRef} 
-            className="flex gap-6 pb-8 px-2 overflow-x-auto scroll-smooth"
-            style={{ 
-              maskImage: "linear-gradient(to right, transparent 0%, black 60px, black calc(100% - 60px), transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 60px, black calc(100% - 60px), transparent 100%)",
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-            }}
+          {/* Navigation Buttons */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 z-20 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"
           >
-            <style jsx>{`
-              div::-webkit-scrollbar {
-                display: none;
+            <ChevronLeft className="w-6 h-6 text-primary" />
+          </button>
+          
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 z-20 w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-110"
+          >
+            <ChevronRight className="w-6 h-6 text-primary" />
+          </button>
+
+          {/* 3D Carousel */}
+          <div className="relative w-full h-full flex items-center justify-center">
+            {panelists.map((panelist, index) => {
+              const isActive = index === currentIndex
+              const isPrev = index === (currentIndex - 1 + panelists.length) % panelists.length
+              const isNext = index === (currentIndex + 1) % panelists.length
+              const isSecondPrev = index === (currentIndex - 2 + panelists.length) % panelists.length
+              const isSecondNext = index === (currentIndex + 2) % panelists.length
+              
+              let transform = 'translateX(1000px) rotateY(90deg) scale(0.7)'
+              let zIndex = 0
+              let opacity = 0
+              
+              if (isActive) {
+                transform = 'translateX(0) rotateY(0deg) scale(1)'
+                zIndex = 10
+                opacity = 1
+              } else if (isPrev) {
+                transform = 'translateX(-120px) rotateY(45deg) scale(0.85)'
+                zIndex = 5
+                opacity = 0.8
+              } else if (isNext) {
+                transform = 'translateX(120px) rotateY(-45deg) scale(0.85)'
+                zIndex = 5
+                opacity = 0.8
+              } else if (isSecondPrev) {
+                transform = 'translateX(-220px) rotateY(60deg) scale(0.7)'
+                zIndex = 2
+                opacity = 0.5
+              } else if (isSecondNext) {
+                transform = 'translateX(220px) rotateY(-60deg) scale(0.7)'
+                zIndex = 2
+                opacity = 0.5
               }
-            `}</style>
-            {duplicatedPanelists.map((panelist, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 w-80 group cursor-pointer"
-              >
-                <div className="relative">
-                  {/* Main Card */}
-                  <div className="bg-white rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-3xl">
-                    <div className="aspect-[3/4] relative overflow-hidden bg-muted">
+              
+              return (
+                <div
+                  key={index}
+                  className="absolute transition-all duration-700 ease-out cursor-pointer"
+                  style={{
+                    transform,
+                    zIndex,
+                    opacity,
+                    transformStyle: 'preserve-3d'
+                  }}
+                  onClick={() => goToSlide(index)}
+                >
+                  {/* Card with 3D Effect */}
+                  <div className="bg-white rounded-xl overflow-hidden shadow-2xl w-72 h-96 relative group">
+                    {/* Image */}
+                    <div className="h-3/4 relative overflow-hidden">
                       <img
                         src={panelist.image || "/placeholder.svg"}
                         alt={panelist.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6">
-                        <h3 className="font-bold text-2xl mb-2 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-100">{panelist.name}</h3>
-                        <p className="text-secondary font-semibold text-lg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200">{panelist.position}</p>
-                      </div>
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     </div>
+                    
+                    {/* Content */}
+                    <div className="h-1/4 p-4 relative bg-white">
+                      <h3 className="font-bold text-lg text-primary leading-tight mb-1 line-clamp-2">{panelist.name}</h3>
+                      <p className="text-sm text-primary/70 leading-tight line-clamp-2">{panelist.position}</p>
+                    </div>
+                    
+                    {/* 3D Shadow/Reflection */}
+                    <div 
+                      className="absolute -bottom-2 left-2 right-2 h-4 bg-black/10 rounded-xl blur-sm"
+                      style={{ transform: 'scaleX(0.9)' }}
+                    />
                   </div>
-
-                  {/* Reflection effect */}
-                  <div
-                    className="absolute -bottom-6 left-0 right-0 h-24 rounded-2xl opacity-40 blur-xl transition-opacity duration-300 group-hover:opacity-60"
-                    style={{
-                      background: "linear-gradient(to bottom, rgba(255,255,255,0.6), transparent)",
-                      transform: "scaleY(-1)",
-                    }}
-                  />
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
-        
-        {/* Indicateur subtil de scroll (optionnel - peut être enlevé) */}
-        <div className="flex justify-center mt-6">
-          <div className="w-12 h-1 bg-white/20 rounded-full overflow-hidden">
-            <div className="h-full bg-white/60 rounded-full animate-pulse" style={{
-              width: isHovered ? '30%' : '100%',
-              transition: 'width 0.3s ease'
-            }} />
-          </div>
+
+        {/* Indicators */}
+        <div className="flex justify-center gap-2 mt-8">
+          {panelists.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? 'bg-primary w-8'
+                  : 'bg-primary/30 hover:bg-primary/60'
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>

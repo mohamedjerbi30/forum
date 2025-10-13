@@ -15,10 +15,10 @@ export function ForumInfoSection() {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           {/* Text Content */}
           <div>
-            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 text-balance">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold mb-3 text-balance text-primary">
               Qu&apos;est-ce que le Forum ENIT Entreprise ?
             </h2>
-            <div className="space-y-3 text-sm md:text-base text-muted-foreground leading-relaxed">
+            <div className="space-y-3 text-sm md:text-base text-primary/80 leading-relaxed">
               <p>
                 Le Forum ENIT Entreprise est l&apos;événement annuel incontournable qui réunit les entreprises leaders
                 et les futurs ingénieurs de l&apos;École Nationale d&apos;Ingénieurs de Tunis.
@@ -53,15 +53,15 @@ export function ForumInfoSection() {
             return (
               <div
                 key={index}
-                className="bg-card border border-border rounded-xl p-6 text-center hover:shadow-lg transition-shadow"
+                className="bg-white/90 backdrop-blur-sm border border-primary/20 rounded-xl p-6 text-center hover:shadow-lg transition-shadow"
               >
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary/10 text-secondary mb-4 border-2 border-secondary/20">
                   <Icon size={28} strokeWidth={2.5} />
                 </div>
-                <div className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
                   <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                 </div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
+                <div className="text-sm text-primary/70">{stat.label}</div>
               </div>
             )
           })}

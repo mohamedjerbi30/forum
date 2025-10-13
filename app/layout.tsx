@@ -3,9 +3,9 @@ import type { Metadata } from "next"
 import { Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
+import { AppWrapper } from "@/components/app-wrapper"
 import "./globals.css"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
+
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -28,11 +28,9 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className={`font-sans ${montserrat.variable}`}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-        </Suspense>
+        <AppWrapper>
+          {children}
+        </AppWrapper>
         <Analytics />
       </body>
     </html>

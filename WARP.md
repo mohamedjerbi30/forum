@@ -17,6 +17,8 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 ### Component Development
 - `npx shadcn@latest add [component-name]` - Add new shadcn/ui components
 - Components are configured with "new-york" style and Lucide icons
+- Use `@/components` alias for component imports
+- Use `@/lib/utils` for the `cn()` utility function
 
 ## Architecture Overview
 
@@ -26,46 +28,64 @@ This is a **Next.js 15 App Router** project for "Forum ENIT Entreprise 2025" - a
 ### Key Architecture Patterns
 
 **App Router Structure:**
-- `/app` - Next.js App Router pages and layouts
-  - `/app/layout.tsx` - Root layout with Navbar, Footer, and French locale
-  - `/app/page.tsx` - Homepage composed of multiple sections
-  - Route-based pages: `/about`, `/contact`, `/exposants`, `/inscription`, `/participants`, `/programme`
+- `/app` - Next.js App Router with single-page application approach
+  - `/app/layout.tsx` - Root layout with Navbar, Footer, Montserrat font, and French locale
+  - `/app/page.tsx` - Homepage using snap-scroll sections with full-screen layout
+  - `/app/globals.css` - Custom brand colors and Tailwind CSS 4.x configuration
 
 **Component Architecture:**
-- `/components` - Feature components (hero-section, countdown-timer, navbar, footer, etc.)
-- `/components/ui` - shadcn/ui reusable components (57+ components available)
-- `/hooks` - Custom React hooks (`use-mobile`, `use-toast`)
-- `/lib` - Utilities (`utils.ts` with `cn()` for className merging)
+- `/components` - Feature-specific sections (hero-section, countdown-timer, companies-section, etc.)
+- `/components/ui` - shadcn/ui reusable components with extensive Radix UI library
+- `/hooks` - Custom React hooks (`use-mobile` with 768px breakpoint, `use-toast`, `use-parallax`, `use-scroll-animation`)
+- `/lib` - Utilities and data (`utils.ts` with `cn()`, `companies-data.ts`)
 
-**Styling & UI:**
-- **Tailwind CSS 4.1.9** with CSS variables and neutral base color
-- **shadcn/ui** with Radix UI components
-- **Montserrat font** as primary typography
-- **Responsive design** with mobile breakpoint at 768px
+**Styling & Brand System:**
+- **Tailwind CSS 4.1.9** with CSS variables and OKLCH color space
+- **Brand Colors:** Primary #28384d (dark blue), Secondary #00adb5 (teal), Accent #ffcd11 (yellow)
+- **Montserrat font** with weights 500 (medium), 600 (semibold), 700 (bold)
+- **Responsive design** with 768px mobile breakpoint
+- **Full-screen snap-scroll sections** with alternating backgrounds
 
 **Key Dependencies:**
 - React 19.1.0 with Next.js 15.5.4
-- TypeScript with strict mode
+- TypeScript with strict mode enabled
 - Form handling: react-hook-form + zod validation
+- UI: Complete Radix UI component suite
+- Animation: embla-carousel-react, tw-animate-css
 - Analytics: Vercel Analytics
-- Icons: Lucide React + Font Awesome
+- Icons: Lucide React + Font Awesome brands
 
-### Development Notes
+### Development Configuration
 
-**Configuration:**
-- TypeScript paths configured with `@/*` aliases
-- ESLint and TypeScript errors ignored during builds (development setup)
+**Build Configuration:**
+- ESLint and TypeScript errors ignored during builds (`next.config.mjs`)
 - Images unoptimized for deployment flexibility
-- French language content throughout
+- TypeScript paths with `@/*` aliases pointing to root directory
+- PostCSS with Tailwind CSS 4.x plugin
 
-**Component Patterns:**
+**Component System:**
 - Server Components by default (RSC enabled)
-- Suspense boundaries for loading states
-- Modular section-based homepage composition
-- Custom hooks for responsive behavior and UI state
+- shadcn/ui with "new-york" style variant
+- Suspense boundaries in root layout
+- CSS variables for theming with light/dark mode support
 
-**Testing Setup:**
-- Jest DOM testing library configured
-- Web vitals monitoring included
+**Homepage Architecture:**
+The main page (`/app/page.tsx`) is composed of full-screen snap-scroll sections:
+1. HeroSection
+2. CountdownTimer  
+3. WhoWeAreSection
+4. ServicesSection
+5. OurAxesSection
+6. ForumInfoSection
+7. ReserveStandSection
+8. PanelistsCarousel
+9. CompaniesSection
 
-This project follows modern Next.js patterns with a focus on component reusability and French localization for an enterprise forum/conference website.
+Each section alternates between default and muted backgrounds for visual separation.
+
+**Custom Hooks Pattern:**
+- `useIsMobile()` - Responsive breakpoint detection at 768px
+- Animation and scroll-based hooks for enhanced UX
+- Toast notifications system
+
+This is a modern React/Next.js 15 application focused on French enterprise conference presentation with heavy emphasis on visual design and smooth user experience.

@@ -23,11 +23,11 @@ export function CompaniesSection() {
   }
 
   return (
-    <section className="py-16 md:py-24 bg-muted/30">
+    <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance">Entreprises Présentes</h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-balance text-primary">Entreprises Présentes</h2>
+          <p className="text-lg md:text-xl text-primary/80 max-w-2xl mx-auto text-pretty">
             Découvrez les entreprises qui participeront au forum
           </p>
         </div>
@@ -36,18 +36,18 @@ export function CompaniesSection() {
           {displayedCompanies.map((company) => (
             <div
               key={company.id}
-              className="bg-card border border-border rounded-xl p-4 flex flex-col items-center text-center hover:shadow-lg transition-all group cursor-pointer hover:scale-105"
+              className="bg-white/90 backdrop-blur-sm border border-primary/20 rounded-xl p-4 flex flex-col items-center text-center hover:shadow-lg transition-all group cursor-pointer hover:scale-105"
               onClick={() => handleCompanyClick(company)}
             >
-              <div className="w-20 h-20 rounded-lg bg-white border border-border flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-sm">
+              <div className="w-20 h-20 rounded-lg bg-white border border-primary/20 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform shadow-sm">
                 <img 
                   src={company.logo} 
                   alt={company.name} 
                   className="w-16 h-16 object-contain" 
                 />
               </div>
-              <h3 className="font-semibold text-sm mb-1 line-clamp-2">{company.name}</h3>
-              <p className="text-xs text-muted-foreground line-clamp-1">{company.sector}</p>
+              <h3 className="font-semibold text-sm mb-1 line-clamp-2 text-primary">{company.name}</h3>
+              <p className="text-xs text-primary/70 line-clamp-1">{company.sector}</p>
             </div>
           ))}
         </div>
